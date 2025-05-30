@@ -79,16 +79,42 @@ E-Commerce-Store/
 │   │   ├── payment.route.js
 │   │   └── product.route.js
 │   └── server.js         # Entry point
-├── frontend/            # React application (planned)
-│   ├── public/
-│   └── src/
-│       ├── assets/
-│       ├── components/
-│       ├── hooks/
-│       ├── lib/
-│       ├── pages/
-│       ├── store/
-│       └── App.jsx
+├── frontend/            
+│   ├── public/          # Static assets
+│   │   ├── bags.jpg
+│   │   ├── glasses.png
+│   │   ├── jackets.jpg
+│   │   ├── jeans.jpg
+│   │   ├── shoes.jpg
+│   │   ├── suits.jpg
+│   │   └── tshirts.jpg
+│   ├── src/
+│       ├── components/  # Reusable UI components
+│       │   ├── AnalyticsTab.jsx
+│       │   ├── CartItem.jsx
+│       │   ├── CategoryItem.jsx
+│       │   ├── CreateProductForm.jsx
+│       │   ├── FeaturedProducts.jsx
+│       │   ├── Navbar.jsx
+│       │   ├── OrderSummary.jsx
+│       │   ├── ProductCard.jsx
+│       │   └── ... 
+│       ├── lib/         # Utilities and services
+│       │   └── axios.js
+│       ├── pages/       # Route pages
+│       │   ├── AdminPage.jsx
+│       │   ├── CartPage.jsx
+│       │   ├── HomePage.jsx
+│       │   ├── LoginPage.jsx
+│       │   ├── SignUpPage.jsx
+│       │   └── ...
+│       ├── stores/      # Zustand state stores
+│       │   ├── useCartStore.js
+│       │   ├── useProductStore.js
+│       │   └── useUserStore.js
+│       ├── App.jsx      # Main application component
+│       ├── index.css    # Global styles
+│       └── main.jsx     # Application entry point
 ├── .env                 # Environment variables
 ├── .gitignore
 ├── package.json
@@ -160,6 +186,53 @@ E-Commerce-Store/
     </tr>
 </table>
 
+
+## 💫 UI Features
+
+
+<table>
+    <tr>
+        <td>
+            <h3>🎭 Modern Design</h3>
+            <ul>
+                <li>🌈 Emerald color theme with dark mode</li>
+                <li>🔄 Smooth animations with Framer Motion</li>
+                <li>🪶 Responsive design for all devices</li>
+                <li>⚡ Fast loading with optimized assets</li>
+            </ul>
+        </td>
+        <td>
+            <h3>📱 User Interface</h3>
+            <ul>
+                <li>🛝 Carousel for featured products</li>
+                <li>🎯 Category browsing with visual tiles</li>
+                <li>🛒 Interactive shopping cart experience</li>
+                <li>✨ Confetti celebration on purchase</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h3>📊 Dashboard</h3>
+            <ul>
+                <li>📈 Interactive charts with Recharts</li>
+                <li>🧩 Tab-based interface for admin tasks</li>
+                <li>📋 Product creation and management forms</li>
+                <li>📱 Mobile-friendly admin controls</li>
+            </ul>
+        </td>
+        <td>
+            <h3>🛠️ User Experience</h3>
+            <ul>
+                <li>🔔 Toast notifications for user actions</li>
+                <li>📱 Intuitive mobile navigation</li>
+                <li>🎫 Coupon application in cart</li>
+                <li>🔐 Secure and simple login/signup</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -201,7 +274,39 @@ STRIPE_SECRET_KEY=your_stripe_secret_key
 CLIENT_URL=http://localhost:5173
 ```
 
-4. **Start Development Server**
+### Add Frontend Installation Instructions
+
+After the backend installation, add specific frontend setup steps:
+
+4. **Setup the Frontend**
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install frontend dependencies
+npm install
+
+# Create .env.local file in the frontend directory
+touch .env.local
+```
+Add the following to .env.local:
+```bash
+VITE_STRIPE_PUBLIC_KEY=your_stripe_publishable_key
+```
+ 5. **Start Development Servers**
+```bash
+# Start the backend server
+npm run dev
+
+# In a separate terminal, start the frontend server
+cd frontend
+npm run dev
+```
+ The application will be available at:
+
+Backend: http://localhost:3000 <br>
+Frontend: http://localhost:5173
+
 
 ## 🌐 API Endpoints
 
