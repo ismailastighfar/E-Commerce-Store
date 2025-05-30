@@ -9,14 +9,13 @@ import {
     deleteProduct
 }  from '../controllers/product.controller.js';
 import { adminRoute, protectedRoute } from '../middleware/auth.middleware.js';
-import upload from '../middleware/file.middleware.js';
 const router = express.Router();
 
-router.get("/", protectedRoute, adminRoute, getAllProducts);
+router.get("/", protectedRoute, getAllProducts);
 router.get("/featured", getFeaturedProducts);
 router.get("/category/:category", getProductsByCategory);
 router.get("/recommendations", getRecommendedProducts);
-router.post("/", protectedRoute, adminRoute, upload.single('image'), createProduct);
+router.post("/", protectedRoute, adminRoute, createProduct);
 router.patch("/:id", protectedRoute, adminRoute, toggleFeaturedProduct);
 router.delete("/:id", protectedRoute, adminRoute, deleteProduct);
 

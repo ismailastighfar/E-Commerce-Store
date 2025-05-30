@@ -31,49 +31,74 @@ export const getFeaturedProducts = async (req, res) => {
     }
 };
 
-export const createProduct = async (req, res) => {
+// export const createProduct = async (req, res) => {
    
-    try {
-        // Form data fields will be in req.body
-        const { name, description, price, category, isFeatured } = req.body;
+//     try {
+//         // Form data fields will be in req.body
+//         const { name, description, price, category, isFeatured } = req.body;
         
-        if (!name || !description || !price || !category) {
-            return res.status(400).json({ message: "All required fields must be provided" });
-        }
+//         if (!name || !description || !price || !category) {
+//             return res.status(400).json({ message: "All required fields must be provided" });
+//         }
 
-        if (!req.file) {
-            return res.status(400).json({ message: "Image is required" });
-        }
+//         if (!req.file) {
+//             return res.status(400).json({ message: "Image is required" });
+//         }
         
-        // Check if the product already exists
-        const existingProduct = await Product.findOne({ name });
-        if (existingProduct) {
-            return res.status(409).json({ message: "Product already exists" });
-        }
+//         // Check if the product already exists
+//         const existingProduct = await Product.findOne({ name });
+//         if (existingProduct) {
+//             return res.status(409).json({ message: "Product already exists" });
+//         }
 
-        // Create a new product
-        const newProduct = new Product({
-            name,
-            description,
-            price,
-            category,
-            isFeatured: isFeatured === 'true' // Convert string to boolean
-        });
+//         // Create a new product
+//         const newProduct = new Product({
+//             name,
+//             description,
+//             price,
+//             category,
+//             isFeatured: isFeatured === 'true' // Convert string to boolean
+//         });
 
-        // Upload image to cloudinary from buffer
-        const result = await cloudinary.uploader.upload(
-            `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`, 
-            { folder: "ecommerce" }
-        );
+//         // Upload image to cloudinary from buffer
+//         const result = await cloudinary.uploader.upload(
+//             `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`, 
+//             { folder: "ecommerce" }
+//         );
         
-        newProduct.image = result?.secure_url ? result.secure_url : "";
-        await newProduct.save();
-        res.status(201).json(newProduct);
-    } catch (error) {
-        res.status(500).json({ message: "Error creating product", error: error.message });
-        console.error("Error creating product:", error);
-    }
-}
+//         newProduct.image = result?.secure_url ? result.secure_url : "";
+//         await newProduct.save();
+//         res.status(201).json(newProduct);
+//     } catch (error) {
+//         res.status(500).json({ message: "Error creating product", error: error.message });
+//         console.error("Error creating product:", error);
+//     }
+// }
+
+export const createProduct = async (req, res) => {
+	try {
+		const { name, description, price, image, category } = req.body;
+
+		let cloudinaryResponse = null;
+
+		if (image) {
+			cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
+		}
+
+		const product = await Product.create({
+			name,
+			description,
+			price,
+			image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
+			category,
+		});
+
+		res.status(201).json(product);
+	} catch (error) {
+		console.log("Error in createProduct controller", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
 
 export const deleteProduct = async (req, res) => {
     try {
@@ -113,6 +138,7 @@ export const getProductsByCategory = async (req, res) => {
     try {
         const { category } = req.params;
         const products = await Product.find({ category });
+        console.log("Products found in category:", category, products.length);
         if (!products || products.length === 0) {
             return res.status(404).json({ message: "No products found in this category" });
         }
